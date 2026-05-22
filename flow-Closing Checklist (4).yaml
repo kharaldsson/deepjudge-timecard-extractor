@@ -1,0 +1,2124 @@
+format_version: 6
+id: closing_checklist
+name: Closing Checklist
+description: >-
+  Workflow for the creation of a closing checklist based on the execution copy
+  of an SPA or similar agreement.
+sharing_level: public_can_view
+shared_groups: []
+shared_users:
+  - user_id: 1fb7bc26-efdb-445b-a4be-5c3b020b2ab3
+    sharing_level: can_view
+  - user_id: 3a971da6-fb5b-4479-8c06-439ff4bd59b9
+    sharing_level: can_view
+  - user_id: 4649f839-f8b7-4bbf-99d7-105ff63c7e53
+    sharing_level: can_view
+  - user_id: 61ba92cc-4abd-41cc-886a-2b55df19acd2
+    sharing_level: can_view
+  - user_id: 7f35e8a2-179e-4a08-86b9-f2438eca54a5
+    sharing_level: can_view
+  - user_id: c0b4dc3a-5465-457c-9afb-b1bbd514d418
+    sharing_level: can_view
+  - user_id: ea4cc945-88f3-4195-a236-2cbe0833d8a4
+    sharing_level: can_edit
+  - user_id: f0939763-2f11-471f-905e-4def073ca4e0
+    sharing_level: can_view
+category: document
+enable_citations: true
+tags:
+  - category: Practice Type
+    name: Transactional
+  - category: Practice Type
+    name: Litigation
+  - category: Task
+    name: Document Review
+graph:
+  nodes:
+    - id: file_input@UlRwpLdmAfW
+      type: file_input
+      label: Agreement
+      position:
+        x: -1965
+        'y': 675
+      group_size:
+        width: 200
+        height: 119
+      subscope_heights: null
+      options:
+        key: file_input_G16P
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: map@dsamrHHCYrL
+      type: map
+      label: null
+      position:
+        x: -1515
+        'y': 300
+      group_size:
+        width: 500
+        height: 320
+      subscope_heights: null
+      options: {}
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: splitter@u0EjJqaEoQ3
+      type: splitter
+      label: Big Chunker
+      position:
+        x: -1755
+        'y': 555
+      group_size:
+        width: 200
+        height: 119
+      subscope_heights: null
+      options:
+        threshold: 50
+        chunker_type: even_faster_split
+      variadic_config: {}
+      parent: null
+      constant_inputs:
+        max_sequence_length:
+          type: Number
+          data: 4096
+        min_sequence_length:
+          type: Number
+          data: 1000
+      generic_args: null
+    - id: splitter@rG4JMst1z-k
+      type: splitter
+      label: Small Chunker
+      position:
+        x: 60
+        'y': 165
+      group_size:
+        width: 200
+        height: 119
+      subscope_heights: null
+      options:
+        threshold: 50
+        chunker_type: even_faster_split
+      variadic_config: {}
+      parent:
+        node: map@dsamrHHCYrL
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs:
+        max_sequence_length:
+          type: Number
+          data: 512
+        min_sequence_length:
+          type: Number
+          data: 32
+      generic_args: null
+    - id: interpolation@3ngSITZrke8
+      type: interpolation
+      label: Filename
+      position:
+        x: 2595
+        'y': 90
+      group_size:
+        width: 200
+        height: 119
+      subscope_heights: null
+      options:
+        format_string: closing_checklist.csv
+      variadic_config:
+        input:
+          - key: _wVgV
+            name: file_title
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: template@SNsXvCD6f56
+      type: template
+      label: Get Title
+      position:
+        x: 2160
+        'y': 225
+      group_size:
+        width: 200
+        height: 151
+      subscope_heights: null
+      options:
+        template_string: |-
+          {%- if file.filename is defined and file.filename -%}
+          {{ file.filename.replace(".pdf", "").replace(".docx", "") }}
+          {%- elif file.title is defined and file.title -%}
+          {{ file.title }}
+          {%- else -%}
+          {%- endif -%}
+      variadic_config:
+        input:
+          - key: _ornq
+            name: file
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: flatten@WtNC9uSfYVB
+      type: flatten
+      label: Small chunks for dates
+      position:
+        x: 2115
+        'y': 765
+      group_size:
+        width: 200
+        height: 113
+      subscope_heights: null
+      options:
+        levels: -1
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: map@KV0PuQYj4Q-
+      type: map
+      label: null
+      position:
+        x: -930
+        'y': 300
+      group_size:
+        width: 860
+        height: 351
+      subscope_heights: null
+      options: {}
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: map@sgsrjLHZCja
+      type: map
+      label: null
+      position:
+        x: 60
+        'y': 135
+      group_size:
+        width: 500
+        height: 216
+      subscope_heights: null
+      options: {}
+      variadic_config: {}
+      parent:
+        node: map@KV0PuQYj4Q-
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs: {}
+      generic_args: null
+    - id: template@Q0o-ihAAMKu
+      type: template
+      label: null
+      position:
+        x: 210
+        'y': 60
+      group_size:
+        width: 200
+        height: 119
+      subscope_heights: null
+      options:
+        template_string: |-
+          <passage_id="[^{{chunk.source_id}}]">
+          {{chunk.chunk_text | safe }}
+          </passage_id="[^{{chunk.source_id}}]">
+      variadic_config:
+        input:
+          - key: _yHfU
+            name: chunk
+      parent:
+        node: map@sgsrjLHZCja
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs: {}
+      generic_args: null
+    - id: concat@AbK21CywpXd
+      type: concat
+      label: null
+      position:
+        x: 585
+        'y': 165
+      group_size:
+        width: 200
+        height: 115
+      subscope_heights: null
+      options:
+        delimiter: ' \n\n\n'
+      variadic_config: {}
+      parent:
+        node: map@KV0PuQYj4Q-
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs: {}
+      generic_args: null
+    - id: map@X0EGhsnw953
+      type: map
+      label: null
+      position:
+        x: 30
+        'y': 300
+      group_size:
+        width: 950
+        height: 350
+      subscope_heights: null
+      options: {}
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: completion@SUFwmbAMCVa
+      type: completion
+      label: Extract Deliverable
+      position:
+        x: 270
+        'y': 30
+      group_size:
+        width: 200
+        height: 152
+      subscope_heights: null
+      options:
+        prompt:
+          default_prompt: >-
+            Below is an excerpt from an agreement. Your task is to identify all
+            explicit deliverables, obligations, and covenants within the
+            text—covering those due at signing, between signing and closing, at
+            closing, or any that are conditional or deviate from the standard
+            agreement.
+
+
+            Here is the excerpt:
+
+
+            <AGREEMENT EXCERPT>
+
+            {agreement}
+
+            </AGREEMENT EXCERPT>
+          specific_prompts: []
+        truncation: truncate_middle
+        json_schema: |-
+          {
+            "type": "object",
+            "properties": {
+              "deliverables": {
+                "type": "array",
+                "description": "An array of action/deliverables related to the transaction.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "action_deliverable": {
+                      "type": "string",
+                      "description": "Description of the action or deliverable."
+                    },
+                   "three_word_summary": {
+                      "type": "string",
+                      "description": "Three-word summary of action or deliverable."
+                    },
+                    "bucket": {
+                      "type": "string",
+                      "description": "Timing classification as Signing, Pre-Closing, Closing, Termination",
+                      "enum": [ "Signing", "Pre-Closing", "Closing", "Termination"]
+                    },
+                    "document_section_reference": {
+                      "type": "string",
+                      "description": "Name (and number, if available) of the document section where the deliverable/action is referenced (e.g., 'Section 3.2: Seller Deliverables')."
+                    },
+                    "passage_id": {
+                      "type": "string",
+                      "description": "Passage ID from the excerpt markup (e.g., '[^54243]')."
+                    },
+                    "delivery_method": {
+                      "type": "string",
+                      "description": "Method of delivery for the action or deliverable."
+                    },
+                    "responsibility": {
+                      "type": "string",
+                      "description": "Entity responsible for the delivery."
+                    },
+                    "due_date": {
+                      "type": "object",
+                      "properties": {
+                        "citation": {
+                          "type": ["string"],
+                          "description": "The citation mentioning the due date of the detected event (e.g. 'Deliver at Closing') ."
+                        }
+                      },
+                      "required": [
+                        "citation"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "action_deliverable",
+                    "document_section_reference",
+                    "passage_id",
+                    "delivery_method",
+                    "responsibility",
+                    "due_date"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["deliverables"],
+            "additionalProperties": false
+          }
+        output_fomat: json
+        system_prompt:
+          default_prompt: "You are an expert M&A lawyer with decades of experience in transaction management. Your task is to analyze agreement excerpts and extract all explicit actionable items and deliverables for a Closing Checklist.\n\n# Core Selection Criteria (The \"Transaction Critical Path\" Test)\n\nTo decide if an item should be extracted, apply the following logic. The item must be a definite step required to consummate the transaction, not a hypothetical remedy.\n\n1. The \"Action Verb\" Filter\nLook for concrete actions that move the deal forward.\n- EXTRACT: Items using verbs like Deliver, Provide, Execute, Sign, File, Register, Transfer, Wire, Pay, Resign, Maintain, Comply, Notify, Seek, Obtain, and Refrain from.\n- EXTRACT \"The Seller shall deliver [Document X].\"\n- EXTRACT: \"The Company shall cause [Action Y] to occur.\"\n\n2. The \"Definite vs. Conditional\" Filter (Crucial)\nDistinguish between steps that must happen to consummate the transaction vs. actions that arise only as remedies if things go wrong.\n\n- INCLUDE (Definite): Procedural obligations that are part of the standard deal flow (e.g., \"Seller shall file the 8-K,\" \"Buyer shall transfer the Funds\").\n\n- INCLUDE (Pre-Closing Conditional Obligations): Extract actions that may be triggered by regulatory thresholds, laws, regulator or third-party requirements, or deal mechanics necessary to close.\n    * Examples: \n        - \"If required by Antitrust Laws, Buyer shall file the HSR notification.\"\n        - \"If any Consent is needed, Seller shall obtain such Third-Party Consents.\"\n        - \"If the SEC requests, Company shall amend and refile the Proxy Statement.\"\n        - \"If required by applicable Law, Parties shall register the Transaction with [Authority].\"\n\n- EXCLUDE (Post-Closing Remedies): Do not extract actions that arise only upon breach, dispute, termination, casualty, or indemnity claims, or that are remedial in nature rather than steps to close.\n    * Examples to Exclude:\n        - \"If a dispute arises, parties shall submit to arbitration.\"\n        - \"Seller shall indemnify Buyer for...\"\n        - \"Upon termination for breach, the non-breaching Party may seek specific performance or damages.\"\n\nDecision Rule:\n- Include if the condition is tied to pre-closing regulatory approvals, third-party consents, required filings, or other prerequisites to consummation.\n- Exclude if the condition is tied to disputes, breaches, remedies, indemnification, or other post-closing enforcement mechanics.\n\n# 3. The \"Reps & Warranties\" Nuance\n- Do Not Extract: pure statements of fact (e.g., \"Seller represents it is in good standing\").\n- EXTRACT: Any requirement to bring down or confirm the accuracy of representations at closing.\n- EXTRACT: Any obligation to update disclosure schedules or notify the other party of changes to representations, as these are critical interim checklist items (these are Pre-Closing Conditional Obligations if triggered by material changes or regulator/third-party requests).\n\n# Strict Exclusion Rules\n\n1.  Table of Contents (TOC): Do not extract items from the Table of Contents, indices, or section headings.\n2.  Past/Completed Items: Exclude actions that the text implies are already done (e.g., \"has delivered,\" \"receipt of which is hereby acknowledged\").\n3.  Recitals: Ignore background facts.\n4.  Post-Closing Remedies: Exclude actions that arise only due to breach/dispute/termination (e.g., arbitration commitments, indemnification obligations, liquidated damages).\n5.  Empty Result: If the excerpt contains no definite, actionable checklist items, return strictly: `{{\"deliverables\": []}}`.\n\n## Instructions for Extraction\n\n* Classify into Buckets:\n    * \"Signing\": Due at/immediately upon signing.\n    * \"Pre-Closing\": Due after signing but before closing.\n    * \"Closing\": Due at the moment of closing.\n    * \"Termination\": Related to termination rights/conditions.\n\n* JSON Output Structure:\n    Return a single JSON object with one key, `deliverables`.\n\n\n## Output Format:\n\nYour answer must be a single JSON object with one key, `deliverables`, holding an array of deliverable objects:\n\n````\n\n{{\n\_ \"deliverables\": [\n\_ \_ {{\n\_ \_ \_ \"action\\_deliverable\": \"Brief description of the action, deliverable, or covenant.\",\n\_ \_ \_ \"three\\_word\\_summary\": \"Three-word summary of action or deliverable.\",\n\_ \_ \_ \"bucket\": \"Signing / Pre-Closing / Closing / Termination\",\n\_ \_ \_ \"document\\_section\\_reference\": \"Section name/number (if available).\",\n\_ \_ \_ \"passage\\_id\": \"Input passage ID.\",\n\_ \_ \_ \"responsibility\": \"Responsible entity.\",\n\_ \_ \_ \"due\\_date\": {{\n\_ \_ \_ \_ \"citation\": \"Citation to the input text defining timing\",\n\_ \_ \_ }},\n\_ \_ \_ \"delivery\\_method\": \"Method of delivery (or 'Not Specified').\"\n\_ \_ }}\n\_ ]\n}}\n\n```\n\n- Only include items present in the excerpt.\n- Classify each item clearly in the `bucket` field.\n- Make sure each extracted item precisely matches the information stated in the input."
+          specific_prompts: []
+        multishot_prompt: []
+        disable_truncation_warning: false
+      variadic_config:
+        input:
+          - key: _ospIoEi
+            name: agreement
+      parent:
+        node: map@X0EGhsnw953
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs:
+        llm:
+          type: LlmSelector
+          data:
+            llm_selector: best
+            llm_name_selector: default
+            extra_config:
+              specific_values: []
+              default_value: []
+        max_output_tokens:
+          type: Number
+          data: 16000
+      generic_args: null
+    - id: flatten@6fOQ5arjV9X
+      type: flatten
+      label: Flatten the deliverables
+      position:
+        x: 1050
+        'y': 300
+      group_size:
+        width: 200
+        height: 132
+      subscope_heights: null
+      options:
+        levels: -1
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: javascript@LAZDbtFz2Ff
+      type: javascript
+      label: Separate the buckets
+      position:
+        x: 2115
+        'y': 405
+      group_size:
+        width: 200
+        height: 313
+      subscope_heights: null
+      options:
+        code: |+
+          const deliverables = input.deliverables.data;
+          let signing = {type: "List", data: []};
+          let closing = {type: "List", data: []};
+          let preClosing = {type: "List", data: []};
+          let termination = {type: "List", data: []};
+
+          deliverables.forEach(item => {
+              const bucket = JSON.parse(item.data).bucket;
+              let temp = JSON.parse(item.data);
+              item.data = JSON.stringify(temp);
+
+              if (bucket === "Signing") {
+                  signing.data.push(item);
+              } else if (bucket === "Pre-Closing") {
+                  preClosing.data.push(item);
+              } else if (bucket === "Closing") {
+                  closing.data.push(item);
+              }  else if (bucket === "Termination") {
+                  termination.data.push(item);
+              }
+          });
+
+
+      variadic_config:
+        input_values:
+          - key: _X_2y
+            name: deliverables
+        output_values:
+          - key: _DWEA
+            name: signing
+          - key: _PWkI
+            name: preClosing
+          - key: _jrUr
+            name: closing
+          - key: _c6Zo
+            name: termination
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: deduplicate@UVZ_-VreASI
+      type: deduplicate
+      label: null
+      position:
+        x: 1050
+        'y': 480
+      group_size:
+        width: 500
+        height: 200
+      subscope_heights: null
+      options: {}
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: javascript@aSVm_I-Xo94
+      type: javascript
+      label: Deliverables
+      position:
+        x: 525
+        'y': 30
+      group_size:
+        width: 200
+        height: 214
+      subscope_heights: null
+      options:
+        code: |-
+          let deliverables = JSON.parse(input.llm.data).deliverables;
+
+          let output = {type: "List", data: []};
+
+          if (deliverables.length > 0) {
+              output.data = deliverables.map(item => ({ type: "String", data: JSON.stringify(item) }));
+          }
+      variadic_config:
+        input_values:
+          - key: __XbI
+            name: llm
+        output_values:
+          - key: _OJSQ
+            name: output
+      parent:
+        node: map@X0EGhsnw953
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs: {}
+      generic_args: null
+    - id: list@JJZcjGXprWH
+      type: list
+      label: All deliverables
+      position:
+        x: 2610
+        'y': 645
+      group_size:
+        width: 200
+        height: 249
+      subscope_heights: null
+      options: {}
+      variadic_config:
+        input:
+          - key: _MOdp
+            name: ''
+          - key: _IdIY
+            name: ''
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: flatten@0FWPHlsZpS5
+      type: flatten
+      label: null
+      position:
+        x: 2910
+        'y': 735
+      group_size:
+        width: 200
+        height: 115
+      subscope_heights: null
+      options: {}
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: subflow@vw_HkcNy03I
+      type: subflow
+      label: null
+      position:
+        x: 4665
+        'y': 930
+      group_size:
+        width: 239
+        height: 169
+      subscope_heights: null
+      options:
+        flow_id: convert_to_horizontal_word_filename
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: javascript@rY8MpjSJuqG
+      type: javascript
+      label: Format the deliverables
+      position:
+        x: 3225
+        'y': 585
+      group_size:
+        width: 200
+        height: 331
+      subscope_heights: null
+      options:
+        code: |-
+          let chunks = input.chunks.data;
+          const passageIdToIdxMap = chunks.reduce((acc, item) => {
+            acc[item.source_id] = item.file_start_idx;
+            return acc;
+          }, {});
+
+
+          let all_deliverables = [];
+
+          input.deliverables.data.forEach(obj => {
+              all_deliverables.push(JSON.parse(obj.data));
+          });
+
+
+
+          all_deliverables.forEach(deliverable => {
+                 const passage_id = deliverable.passage_id;
+                 if (!passage_id) { return { ...{position: -1} , ...deliverable }; }
+                 const num = Number(passage_id.match(/\d+/)[0]);
+                 return { ...{position: passageIdToIdxMap[num]} , ...deliverable };;
+          });
+          all_deliverables.sort((a, b) => a.position - b.position);
+          let output = [];
+          all_deliverables.forEach(deliverable => {
+                 output.push({ type: "String", data: JSON.stringify(deliverable) });
+          });
+
+          const key_events = {
+            type: "List",
+            data: output
+          };
+      variadic_config:
+        input_values:
+          - key: _JcDN
+            name: deliverables
+          - key: _ji_H
+            name: chunks
+        output_values:
+          - key: _E_HV
+            name: key_events
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: javascript@0v7FFijET2F
+      type: javascript
+      label: Make the table
+      position:
+        x: 4170
+        'y': 750
+      group_size:
+        width: 200
+        height: 231
+      subscope_heights: null
+      options:
+        code: >+
+          // --- Table structures and headers ---
+
+          const docxHeaders = [
+            "**Short Summary**", "**Type**", "**Document/Action**", "**Document Ref.**", "**Form Of Deliverable**", "**Responsibility**", "**Timing Reference**"
+          ];
+
+          const docxHeaderRow = '| ' + docxHeaders.join(' | ') + ' |\n';
+
+          const docxSeparatorRow = '|' + docxHeaders.map(() =>
+          '---------------').join('|') + "|";
+
+
+          const webHeaders = [
+            'Short Summary', 'Type', 'Document/Action', 'Section Ref.', 'Underlying Provision', 'Form Of Deliverable',
+            'Responsibility', 'Timing Reference'
+            // --- removed: 'Comment', 'Status'
+          ];
+
+
+
+
+          const webHeaderRow = '| ' + webHeaders.join(' | ') + ' |\n';
+
+          const webSeparatorRow = '|' + webHeaders.map(() =>
+          '---------------').join('|') + "|";
+
+
+          let data_string = "";
+
+          let docx_data_string = "";  // without reference ID
+
+
+
+          let csv_string = {rows: []}; // input.markdown_table.data
+
+
+          for (row in input.markdown_table.data) {
+            let rowData = input.markdown_table.data[row].data;
+            let bucket = rowData[1].data;
+            let rowObject = {};
+
+            data_string+= '\n| ';
+            docx_data_string += '\n| ';
+
+            for (let i = 0; i < rowData.length; i++) {
+              data_string += rowData[i].data + "|";
+              if (i !== 4) {
+                docx_data_string += rowData[i].data + "|";
+                rowObject[webHeaders[i]] = rowData[i].data;
+              }
+
+            }
+            csv_string.rows.push(rowObject);
+          }
+
+
+
+          const csv_output = {
+              type: "String",
+              data: JSON.stringify(csv_string)
+          };
+
+
+          const docx_table = {
+            type: "String",
+            data: [docxHeaderRow, docxSeparatorRow, docx_data_string].join('')
+          }
+
+
+
+          const checklist = {type: "String", data: `# Closing Checklist\n\n
+          ${webHeaderRow}${webSeparatorRow}${data_string}` };
+
+
+      variadic_config:
+        input_values:
+          - key: _DIAc
+            name: markdown_table
+          - key: _uIX8
+            name: merged_date
+        output_values:
+          - key: _TxEo
+            name: docx_table
+          - key: _SFbN
+            name: csv_output
+          - key: _wvcc
+            name: checklist
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: javascript@IZcKnvYdftK
+      type: javascript
+      label: Format the data for the table
+      position:
+        x: 3840
+        'y': 450
+      group_size:
+        width: 200
+        height: 195
+      subscope_heights: null
+      options:
+        code: |+
+          // =============== COMMON DATA UNWRAPPING UTILS =================
+
+
+          function buildString(element) {
+            return {
+              type: "String",
+              data: element
+            }
+          }
+
+          const _headers = [
+            "three_word_summary",
+            "bucket",
+            "action_deliverable",
+            "document_section_reference",
+            "passage_id",
+            "delivery_method",
+            "responsibility"
+          ]
+
+          let markdownDataRows = [];
+          //let rows = input.key_events.data;
+          let rows = JSON.parse(input.events.data);
+
+          rows.forEach(line => {
+            let d = line;
+
+            let mdVals = []
+
+            for (let key of _headers) {
+                  mdVals.push(buildString(d[key] || ""));
+            }
+
+            // Adding the Timing reference in the table
+            mdVals.push(buildString((d.due_date.citation)));
+
+            markdownDataRows.push(
+               {
+                 type: "List",
+                 data: mdVals
+               }
+            )
+          });
+
+          const output_headers = _headers.map(key => buildString(key))
+
+          const markdown_table = {
+            type: "List",
+            data: markdownDataRows
+          };
+
+
+      variadic_config:
+        input_values:
+          - key: _0HYN
+            name: events
+        output_values:
+          - key: _ZiSa
+            name: markdown_table
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: javascript@WROqofP2cOS
+      type: javascript
+      label: Merge date with event
+      position:
+        x: 3525
+        'y': 540
+      group_size:
+        width: 200
+        height: 215
+      subscope_heights: null
+      options:
+        code: >-
+
+
+          // Example usage:
+
+          const key_events = input.events.data.map(event =>
+          JSON.parse(event.data));
+
+          //const reference_events = input.reference_events.data.map(event =>
+          JSON.parse(event.data));
+
+
+
+
+          output = {
+            "type": "String",
+            "data": JSON.stringify(key_events)
+          }
+      variadic_config:
+        input_values:
+          - key: _vClO
+            name: events
+        output_values:
+          - key: _oMyZ
+            name: output
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: output@vekbN2sB2Y1
+      type: output
+      label: Checklist table
+      position:
+        x: 4665
+        'y': 750
+      group_size:
+        width: 200
+        height: 152
+      subscope_heights: null
+      options:
+        type: String
+      variadic_config:
+        files: []
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: csv@_61aR3h_CpN
+      type: csv
+      label: null
+      position:
+        x: 4665
+        'y': 495
+      group_size:
+        width: 200
+        height: 148
+      subscope_heights: null
+      options: {}
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: output@wDYRlO4a-hP
+      type: output
+      label: CSV Table
+      position:
+        x: 5115
+        'y': 405
+      group_size:
+        width: 200
+        height: 115
+      subscope_heights: null
+      options:
+        type: unknown
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: output@Q8cGzieyS73
+      type: output
+      label: Docx file
+      position:
+        x: 5100
+        'y': 570
+      group_size:
+        width: 200
+        height: 116
+      subscope_heights: null
+      options:
+        type: unknown
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: interpolation@TwuHmatxeqB
+      type: interpolation
+      label: Filename
+      position:
+        x: 4170
+        'y': 1170
+      group_size:
+        width: 200
+        height: 119
+      subscope_heights: null
+      options:
+        format_string: closing_checklist.docx
+      variadic_config:
+        input: []
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: zip@HWK0wvG5And
+      type: zip
+      label: null
+      position:
+        x: 675
+        'y': 720
+      group_size:
+        width: 1175
+        height: 560
+      subscope_heights: null
+      options: {}
+      variadic_config:
+        outputs:
+          - key: _vKQb
+            name: item
+        iterators:
+          - key: _zh1t
+            name: item
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+    - id: completion@jNNbCVy-IbW
+      type: completion
+      label: Filtering out irrelevant items
+      position:
+        x: 270
+        'y': 180
+      group_size:
+        width: 200
+        height: 217
+      subscope_heights: null
+      options:
+        prompt:
+          default_prompt: >-
+            Please evaluate the following extracted item to see if it belongs on
+            the Closing Checklist.
+
+
+            {item}
+
+
+            Based on the logic defined in the system prompt, output the JSON
+            boolean.
+          specific_prompts: []
+        truncation: truncate_middle
+        json_schema: |-
+          {
+            "type": "object",
+            "properties": {
+                   "is_valid": {
+                      "type": "boolean",
+                      "description": "if the extracted item belongs on the formal Closing Agenda/Checklist for a transaction"
+                    }
+            },
+            "required": ["is_valid"],
+            "additionalProperties": false
+          }
+        output_fomat: json
+        system_prompt:
+          default_prompt: >-
+            You are a Senior Lawyer acting as a final quality control filter for
+            a Closing Checklist.
+
+
+            Your sole purpose is to review a specific extracted item and
+            determine if it belongs on the formal Closing Agenda/Checklist for a
+            transaction.
+
+
+            **Your Output:**
+
+            Return a JSON object with a single key: `{{"is_valid": boolean}}`.
+
+            - `true`: The item is a valid closing checklist item (action,
+            deliverable, covenant, or condition precedent).
+
+            - `false`: The item is noise, a hypothetical remedy, a past event,
+            or a general statement of fact.
+
+
+            **Evaluation Logic:**
+
+
+            1.  **PASS (Return `true`) if the item is:**
+                * **A Deliverable:** A physical document, certificate, receipt, resignation, or consent that must be handed over (e.g., "Deliver Stock Powers").
+                * **A Concrete Action:**  A step required to consummate the deal OR an interim obligation to maintain the status quo (e.g., "Refrain from issuing dividends," "Maintain existing insurance policies").
+                * **A Pre-Closing Obligation:** An action that must be completed *before* closing to satisfy a condition (e.g., "Obtain HSR Clearance").
+                * **A Closing Certificate:** A requirement to deliver a certificate evidencing the accuracy of Representations and Warranties.
+                * **Pre-Closing Conditional Obligations (PASS):** Items contingent on regulatory thresholds, laws, regulator or third-party requests, shareholder actions, or required consents/notices that are prerequisites to Signing-to-Closing or Closing.
+                  * Examples: "If required by Antitrust Laws, file HSR notification," "If the SEC requests, amend and refile the Proxy Statement," "If any third-party consent is required, obtain such consent".
+
+            2.  **FAIL (Return `false`) if the item is:**
+                * **Post-Closing Remedies (FAIL):** Actions triggered by breach, dispute, termination, or enforcement that are remedial rather than steps to close (e.g., "Indemnify for breaches," "Submit to arbitration," "Seek damages or specific performance," "Pay termination fee").
+                * **Contingent/Remedial:** Actions that only happen *if* something goes wrong or *if* a specific dispute arises (e.g., "Indemnify for breaches," "Submit to arbitration").  Only fail items related to post-closing disputes, breaches, or indemnification claims.
+                * **Historical:** Actions clearly described in the past tense or as already completed (e.g., "Recitals," "Background," "Already delivered").
+                * **General Reps & Warranties:** Pure statements of fact. However, PASS if the item implies a "Bring-down" requirement or an obligation to notify the other party of any changes/inaccuracies prior to closing.
+                * **Administrative/TOC:** Table of contents lines, headers, or definitions.
+
+            **Conditional Items Decision Rule:**
+
+            - Include (PASS) if the condition relates to pre-closing regulatory
+            approvals, required filings, third-party consents, shareholder
+            notices/approvals, or other prerequisites to consummation.
+
+            - Exclude (FAIL) if the condition arises from disputes, breaches,
+            termination events, indemnification, or other remedial/enforcement
+            mechanisms (typically post-closing or non-closing).
+
+
+            **Bias Instruction:**
+
+            You are building a comprehensive checklist. If an item describes an
+            obligation to do something, get something, or stop doing something
+            during the period between Signing and Closing, it is VALID. Err on
+            the side of inclusion for all interim operating covenants. If an
+            item is ambiguous or you are unsure if it is a "hard" deliverable
+            vs. a "soft" covenant, lean towards **`true`** (Keep it). Ambiguous
+            conditional items should only be kept if they relate to pre-closing
+            regulatory/consent requirements; remedial/dispute-driven items
+            should be marked **`false`**.
+
+
+
+
+            ### **Few-Shot Examples**
+
+
+            **User:**
+
+            Please evaluate the following extracted item to see if it belongs on
+            the Closing Checklist.
+
+            **Item Details:**
+
+              * **Description:** Seller shall deliver to Buyer a certificate of good standing from the Secretary of State.
+              * **Summary:** Deliver Good Standing
+              * **Responsibility:** Seller
+              * **Context/Timing:** Closing
+              * **Source Text:** "Section 2.4(a)"
+
+            **Assistant:**
+
+
+            ```json
+
+            {{"is_valid": true}}
+
+            ```
+
+
+            **User:**
+
+            Please evaluate the following extracted item to see if it belongs on
+            the Closing Checklist.
+
+            **Item Details:**
+
+              * **Description:** Seller represents and warrants that the Intellectual Property is valid and enforceable.
+              * **Summary:** IP Validity Rep
+              * **Responsibility:** Seller
+              * **Context/Timing:** Signing
+              * **Source Text:** "Section 4.12"
+
+            **Assistant:**
+
+
+            ```json
+
+            {{"is_valid": false}}
+
+            ```
+
+
+            **User:**
+
+            Please evaluate the following extracted item to see if it belongs on
+            the Closing Checklist.
+
+            **Item Details:**
+
+              * **Description:** Buyer shall wire the Closing Payment to the account designated by Seller.
+              * **Summary:** Wire Closing Payment
+              * **Responsibility:** Buyer
+              * **Context/Timing:** Closing
+              * **Source Text:** "Section 3.2"
+
+            **Assistant:**
+
+
+            ```json
+
+            {{"is_valid": true}}
+
+            ```
+
+
+            **User:**
+
+            Please evaluate the following extracted item to see if it belongs on
+            the Closing Checklist.
+
+            **Item Details:**
+
+              * **Description:** In the event of a material breach, Seller shall indemnify Buyer for all resulting losses.
+              * **Summary:** Indemnification Obligation
+              * **Responsibility:** Seller
+              * **Context/Timing:** Termination
+              * **Source Text:** "Article VIII"
+
+            **Assistant:**
+
+
+            ```json
+
+            {{"is_valid": false}}
+
+            ```
+
+
+            **User:**
+
+            Please evaluate the following extracted item to see if it belongs on
+            the Closing Checklist.
+
+            **Item Details:**
+
+              * **Description:** The Parties acknowledge that the Confidentiality Agreement was signed on January 1st.
+              * **Summary:** Acknowledge NDA
+              * **Responsibility:** Both Parties
+              * **Context/Timing:** Pre-Closing
+              * **Source Text:** "Recitals"
+
+            **Assistant:**
+
+
+            ```json
+
+            {{"is_valid": false}}
+
+            ```
+
+
+            **User:**
+
+            Please evaluate the following extracted item to see if it belongs on
+            the Closing Checklist.
+
+            **Item Details:**
+
+              * **Description:** Seller shall use commercially reasonable efforts to obtain the Landlord Consent prior to Closing.
+              * **Summary:** Obtain Landlord Consent
+              * **Responsibility:** Seller
+              * **Context/Timing:** Pre-Closing
+              * **Source Text:** "Section 5.5"
+
+            **Assistant:**
+
+
+            ```json
+
+            {{"is_valid": true}}
+
+            ```
+          specific_prompts: []
+        multishot_prompt: []
+        disable_truncation_warning: false
+      variadic_config:
+        input:
+          - key: _7f5f
+            name: item
+      parent:
+        node: zip@HWK0wvG5And
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs:
+        llm:
+          type: LlmSelector
+          data:
+            llm_selector: best
+            llm_name_selector: default
+            extra_config:
+              specific_values: []
+              default_value: []
+      generic_args: null
+    - id: javascript@9yAufz1FKNp
+      type: javascript
+      label: Format extracted item
+      position:
+        x: 45
+        'y': 165
+      group_size:
+        width: 200
+        height: 216
+      subscope_heights: null
+      options:
+        code: >+
+          function createValidatorUserPrompt(item) {
+
+            // Extract values with fallbacks to prevent "undefined" appearing in the prompt
+            const description = item.action_deliverable || "N/A";
+            const summary = item.three_word_summary || "N/A";
+            const responsibility = item.responsibility || "Not Specified";
+            const bucket = item.bucket || "Unknown";
+            // Construct the prompt string
+            return `
+          **Item Details:**
+
+          * **Description:** ${description}
+
+          * **Summary:** ${summary}
+
+          * **Responsibility:** ${responsibility}
+
+          * **Context/Timing:** ${bucket}
+
+          `;
+
+          }
+
+
+          // --- Example Usage ---
+
+
+          // 1. Sample JSON Object (as output by your first LLM)
+
+          const sampleDeliverable = JSON.parse(input.item.data);
+
+
+          // 2. Generate the prompt
+
+          const userPrompt ={type:"String",
+          data:createValidatorUserPrompt(sampleDeliverable)};
+
+      variadic_config:
+        input_values:
+          - key: _slAr
+            name: item
+        output_values:
+          - key: _4ZMH
+            name: userPrompt
+      parent:
+        node: zip@HWK0wvG5And
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs: {}
+      generic_args: null
+    - id: template@PTzlbH_vq1i
+      type: template
+      label: is it valid?
+      position:
+        x: 270
+        'y': 375
+      group_size:
+        width: 200
+        height: 151
+      subscope_heights: null
+      options:
+        template_string: |-
+          {%- set val = filter | json -%}
+          {{val.is_valid}}
+      variadic_config:
+        input:
+          - key: _hwI2
+            name: filter
+      parent:
+        node: zip@HWK0wvG5And
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs: {}
+      generic_args: null
+    - id: filter@SVEgBYIFbyg
+      type: filter
+      label: null
+      position:
+        x: 540
+        'y': 180
+      group_size:
+        width: 500
+        height: 200
+      subscope_heights: null
+      options: {}
+      variadic_config: {}
+      parent:
+        node: zip@HWK0wvG5And
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs: {}
+      generic_args: null
+    - id: list@ahz0EVxbvlJ
+      type: list
+      label: null
+      position:
+        x: 270
+        'y': 15
+      group_size:
+        width: 200
+        height: 151
+      subscope_heights: null
+      options: {}
+      variadic_config:
+        input:
+          - key: _ozgU
+            name: ''
+      parent:
+        node: zip@HWK0wvG5And
+        scope:
+          key: body
+          variadic_key: null
+      constant_inputs: {}
+      generic_args: null
+    - id: flatten@YyXNRg8mJr7
+      type: flatten
+      label: Flatten the deliverables
+      position:
+        x: 1695
+        'y': 540
+      group_size:
+        width: 200
+        height: 132
+      subscope_heights: null
+      options:
+        levels: -1
+      variadic_config: {}
+      parent: null
+      constant_inputs: {}
+      generic_args: null
+  edges:
+    - id: xy-edge__file_input@UlRwpLdmAfWresult-splitter@u0EjJqaEoQ3input
+      source:
+        node: file_input@UlRwpLdmAfW
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: splitter@u0EjJqaEoQ3
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: xy-edge__map@dsamrHHCYrLgroup-element-splitter@rG4JMst1z-kinput
+      source:
+        node: map@dsamrHHCYrL
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: group-element
+          variadic_key: null
+      target:
+        node: splitter@rG4JMst1z-k
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: xy-edge__splitter@u0EjJqaEoQ3result-map@dsamrHHCYrLinput
+      source:
+        node: splitter@u0EjJqaEoQ3
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: map@dsamrHHCYrL
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: dj-edge__template@fr-jAP5JakWresult-map@hDV2Mn_PoAHelement-result
+      source:
+        node: template@Q0o-ihAAMKu
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: map@sgsrjLHZCja
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: element-result
+          variadic_key: null
+    - id: dj-edge__map@hDV2Mn_PoAHgroup-element-template@fr-jAP5JakWinput-_yHfU
+      source:
+        node: map@sgsrjLHZCja
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: group-element
+          variadic_key: null
+      target:
+        node: template@Q0o-ihAAMKu
+        scope: null
+        handle:
+          key: input
+          variadic_key: _yHfU
+    - id: xy-edge__splitter@rG4JMst1z-kresult-map@dsamrHHCYrLelement-result
+      source:
+        node: splitter@rG4JMst1z-k
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: map@dsamrHHCYrL
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: element-result
+          variadic_key: null
+    - id: xy-edge__map@dsamrHHCYrLresult-map@KV0PuQYj4Q-input
+      source:
+        node: map@dsamrHHCYrL
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: map@KV0PuQYj4Q-
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: xy-edge__concat@AbK21CywpXdresult-map@KV0PuQYj4Q-element-result
+      source:
+        node: concat@AbK21CywpXd
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: map@KV0PuQYj4Q-
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: element-result
+          variadic_key: null
+    - id: xy-edge__map@KV0PuQYj4Q-group-element-map@sgsrjLHZCjainput
+      source:
+        node: map@KV0PuQYj4Q-
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: group-element
+          variadic_key: null
+      target:
+        node: map@sgsrjLHZCja
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: xy-edge__map@sgsrjLHZCjaresult-concat@AbK21CywpXdinput
+      source:
+        node: map@sgsrjLHZCja
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: concat@AbK21CywpXd
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: >-
+        dj-edge__map@X0EGhsnw953-body--group-element-__completion@SUFwmbAMCVa---input-_ospIoEi
+      source:
+        node: map@X0EGhsnw953
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: group-element
+          variadic_key: null
+      target:
+        node: completion@SUFwmbAMCVa
+        scope: null
+        handle:
+          key: input
+          variadic_key: _ospIoEi
+    - id: >-
+        dj-edge__SiA-sNMmlsP__map@KV0PuQYj4Q--~::~::result::~__map@X0EGhsnw953-~::~::input::~
+      source:
+        node: map@KV0PuQYj4Q-
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: map@X0EGhsnw953
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: >-
+        dj-edge__nRsusK5zMuf__map@X0EGhsnw953-~::~::result::~__flatten@6fOQ5arjV9X-~::~::input::~
+      source:
+        node: map@X0EGhsnw953
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: flatten@6fOQ5arjV9X
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: >-
+        dj-edge__go77gMGDQhD__flatten@6fOQ5arjV9X-~::~::result::~__deduplicate@UVZ_-VreASI-~::~::input::~
+      source:
+        node: flatten@6fOQ5arjV9X
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: deduplicate@UVZ_-VreASI
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: >-
+        dj-edge__9-Utw7m1YNT__deduplicate@UVZ_-VreASI-body::~::group-element::~__deduplicate@UVZ_-VreASI-body::~::element-result::~
+      source:
+        node: deduplicate@UVZ_-VreASI
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: group-element
+          variadic_key: null
+      target:
+        node: deduplicate@UVZ_-VreASI
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: element-result
+          variadic_key: null
+    - id: xy-edge__file_input@UlRwpLdmAfWresult-template@SNsXvCD6f56input-_ornq
+      source:
+        node: file_input@UlRwpLdmAfW
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: template@SNsXvCD6f56
+        scope: null
+        handle:
+          key: input
+          variadic_key: _ornq
+    - id: xy-edge__template@SNsXvCD6f56result-interpolation@3ngSITZrke8input-_wVgV
+      source:
+        node: template@SNsXvCD6f56
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: interpolation@3ngSITZrke8
+        scope: null
+        handle:
+          key: input
+          variadic_key: _wVgV
+    - id: >-
+        dj-edge__t6Retng_Cv2__completion@SUFwmbAMCVa-~::~::result::~__javascript@aSVm_I-Xo94-~::~::input_values::__XbI
+      source:
+        node: completion@SUFwmbAMCVa
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: javascript@aSVm_I-Xo94
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: __XbI
+    - id: >-
+        dj-edge__uHLwkl6SDhD__javascript@aSVm_I-Xo94-~::~::output_values::_OJSQ__map@X0EGhsnw953-body::~::element-result::~
+      source:
+        node: javascript@aSVm_I-Xo94
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _OJSQ
+      target:
+        node: map@X0EGhsnw953
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: element-result
+          variadic_key: null
+    - id: xy-edge__map@dsamrHHCYrLresult-flatten@WtNC9uSfYVBinput
+      source:
+        node: map@dsamrHHCYrL
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: flatten@WtNC9uSfYVB
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: >-
+        dj-edge__TI7Zd9ESkls__javascript@LAZDbtFz2Ff-~::~::output_values::_jrUr__list@JJZcjGXprWH-~::~::input::_IdIY
+      source:
+        node: javascript@LAZDbtFz2Ff
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _jrUr
+      target:
+        node: list@JJZcjGXprWH
+        scope: null
+        handle:
+          key: input
+          variadic_key: _IdIY
+    - id: >-
+        dj-edge__kSXP_627hU5__list@JJZcjGXprWH-~::~::result::~__flatten@0FWPHlsZpS5-~::~::input::~
+      source:
+        node: list@JJZcjGXprWH
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: flatten@0FWPHlsZpS5
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: >-
+        dj-edge__javascript@0v7FFijET2F---output_values-_TxEo__subflow@vw_HkcNy03I---input@92nVvvuy29Y-
+      source:
+        node: javascript@0v7FFijET2F
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _TxEo
+      target:
+        node: subflow@vw_HkcNy03I
+        scope: null
+        handle:
+          key: input@92nVvvuy29Y
+          variadic_key: null
+    - id: >-
+        dj-edge__javascript@WROqofP2cOS---output_values-_oMyZ__javascript@0v7FFijET2F---input_values-_uIX8
+      source:
+        node: javascript@WROqofP2cOS
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _oMyZ
+      target:
+        node: javascript@0v7FFijET2F
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _uIX8
+    - id: >-
+        dj-edge__javascript@IZcKnvYdftK---output_values-_ZiSa__javascript@0v7FFijET2F---input_values-_DIAc
+      source:
+        node: javascript@IZcKnvYdftK
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _ZiSa
+      target:
+        node: javascript@0v7FFijET2F
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _DIAc
+    - id: >-
+        dj-edge__javascript@rY8MpjSJuqG---output_values-_E_HV__javascript@IZcKnvYdftK---input_values-_4UIG
+      source:
+        node: javascript@rY8MpjSJuqG
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _E_HV
+      target:
+        node: javascript@IZcKnvYdftK
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _4UIG
+    - id: >-
+        dj-edge__javascript@rY8MpjSJuqG---output_values-_E_HV__javascript@WROqofP2cOS---input_values-_vClO
+      source:
+        node: javascript@rY8MpjSJuqG
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _E_HV
+      target:
+        node: javascript@WROqofP2cOS
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _vClO
+    - id: >-
+        dj-edge__javascript@WROqofP2cOS---output_values-_oMyZ__javascript@IZcKnvYdftK---input_values-_5Lby
+      source:
+        node: javascript@WROqofP2cOS
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _oMyZ
+      target:
+        node: javascript@IZcKnvYdftK
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _5Lby
+    - id: >-
+        dj-edge__javascript@WROqofP2cOS---output_values-_oMyZ__javascript@IZcKnvYdftK---input_values-_3fln
+      source:
+        node: javascript@WROqofP2cOS
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _oMyZ
+      target:
+        node: javascript@IZcKnvYdftK
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _3fln
+    - id: >-
+        dj-edge__javascript@WROqofP2cOS---output_values-_oMyZ__javascript@IZcKnvYdftK---input_values-_0HYN
+      source:
+        node: javascript@WROqofP2cOS
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _oMyZ
+      target:
+        node: javascript@IZcKnvYdftK
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _0HYN
+    - id: >-
+        dj-edge__javascript@0v7FFijET2F---output_values-_SFbN__csv@_61aR3h_CpN---content-
+      source:
+        node: javascript@0v7FFijET2F
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _SFbN
+      target:
+        node: csv@_61aR3h_CpN
+        scope: null
+        handle:
+          key: content
+          variadic_key: null
+    - id: dj-edge__csv@_61aR3h_CpN---file-__output@wDYRlO4a-hP---value-
+      source:
+        node: csv@_61aR3h_CpN
+        scope: null
+        handle:
+          key: file
+          variadic_key: null
+      target:
+        node: output@wDYRlO4a-hP
+        scope: null
+        handle:
+          key: value
+          variadic_key: null
+    - id: >-
+        dj-edge__8WaPL6tEfwY__flatten@0FWPHlsZpS5-~::~::result::~__javascript@rY8MpjSJuqG-~::~::input_values::_JcDN
+      source:
+        node: flatten@0FWPHlsZpS5
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: javascript@rY8MpjSJuqG
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _JcDN
+    - id: >-
+        dj-edge__YC_WVZ6qm0q__interpolation@3ngSITZrke8-~::~::result::~__csv@_61aR3h_CpN-~::~::filename::~
+      source:
+        node: interpolation@3ngSITZrke8
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: csv@_61aR3h_CpN
+        scope: null
+        handle:
+          key: filename
+          variadic_key: null
+    - id: >-
+        dj-edge__gbzgzwA59Cs__template@Oq-RVGkShx6-~::~::result::~__output@vekbN2sB2Y1-~::~::value::~
+      source:
+        node: javascript@0v7FFijET2F
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _wvcc
+      target:
+        node: output@vekbN2sB2Y1
+        scope: null
+        handle:
+          key: value
+          variadic_key: null
+    - id: >-
+        dj-edge__8AJ0dd5bYHl__javascript@LAZDbtFz2Ff-~::~::output_values::_DWEA__list@JJZcjGXprWH-~::~::input::_8wzT
+      source:
+        node: javascript@LAZDbtFz2Ff
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _DWEA
+      target:
+        node: list@JJZcjGXprWH
+        scope: null
+        handle:
+          key: input
+          variadic_key: _8wzT
+    - id: >-
+        dj-edge__zFrw5W77iHO__javascript@LAZDbtFz2Ff-~::~::output_values::_PWkI__list@JJZcjGXprWH-~::~::input::_MOdp
+      source:
+        node: javascript@LAZDbtFz2Ff
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _PWkI
+      target:
+        node: list@JJZcjGXprWH
+        scope: null
+        handle:
+          key: input
+          variadic_key: _MOdp
+    - id: >-
+        dj-edge__wJZoKZZIrGA__javascript@LAZDbtFz2Ff-~::~::output_values::_c6Zo__list@JJZcjGXprWH-~::~::input::_M0XA
+      source:
+        node: javascript@LAZDbtFz2Ff
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _c6Zo
+      target:
+        node: list@JJZcjGXprWH
+        scope: null
+        handle:
+          key: input
+          variadic_key: _M0XA
+    - id: >-
+        dj-edge__QFxo0a2Ml6h__subflow@vw_HkcNy03I-~::~::output@-RufWtvCk7E::~__output@Q8cGzieyS73-~::~::value::~
+      source:
+        node: subflow@vw_HkcNy03I
+        scope: null
+        handle:
+          key: output@-RufWtvCk7E
+          variadic_key: null
+      target:
+        node: output@Q8cGzieyS73
+        scope: null
+        handle:
+          key: value
+          variadic_key: null
+    - id: >-
+        dj-edge__kEM3v8OONLM__interpolation@TwuHmatxeqB-~::~::result::~__subflow@vw_HkcNy03I-~::~::input@BGqa8dafEkW::~
+      source:
+        node: interpolation@TwuHmatxeqB
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: subflow@vw_HkcNy03I
+        scope: null
+        handle:
+          key: input@BGqa8dafEkW
+          variadic_key: null
+    - id: >-
+        dj-edge__FxYZqVgctRY__flatten@WtNC9uSfYVB-~::~::result::~__javascript@rY8MpjSJuqG-~::~::input_values::_ji_H
+      source:
+        node: flatten@WtNC9uSfYVB
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: javascript@rY8MpjSJuqG
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _ji_H
+    - id: >-
+        dj-edge__FyIicowxDVJ__javascript@9yAufz1FKNp-~::~::output_values::_4ZMH__completion@jNNbCVy-IbW-~::~::input::_7f5f
+      source:
+        node: javascript@9yAufz1FKNp
+        scope: null
+        handle:
+          key: output_values
+          variadic_key: _4ZMH
+      target:
+        node: completion@jNNbCVy-IbW
+        scope: null
+        handle:
+          key: input
+          variadic_key: _7f5f
+    - id: >-
+        dj-edge__Ssj2nQpZolw__deduplicate@UVZ_-VreASI-~::~::result::~__zip@HWK0wvG5And-~::~::iterators_input::_zh1t
+      source:
+        node: deduplicate@UVZ_-VreASI
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: zip@HWK0wvG5And
+        scope: null
+        handle:
+          key: iterators_input
+          variadic_key: _zh1t
+    - id: >-
+        dj-edge__s5I2RiEkXOi__zip@HWK0wvG5And-body::~::elements::_zh1t__javascript@9yAufz1FKNp-~::~::input_values::_slAr
+      source:
+        node: zip@HWK0wvG5And
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: elements
+          variadic_key: _zh1t
+      target:
+        node: javascript@9yAufz1FKNp
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _slAr
+    - id: >-
+        dj-edge__Gd_cNxuh9f___completion@jNNbCVy-IbW-~::~::result::~__template@PTzlbH_vq1i-~::~::input::_hwI2
+      source:
+        node: completion@jNNbCVy-IbW
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: template@PTzlbH_vq1i
+        scope: null
+        handle:
+          key: input
+          variadic_key: _hwI2
+    - id: >-
+        dj-edge__b_V_cZ4VC7a__zip@HWK0wvG5And-body::~::elements::_zh1t__list@ahz0EVxbvlJ-~::~::input::_ozgU
+      source:
+        node: zip@HWK0wvG5And
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: elements
+          variadic_key: _zh1t
+      target:
+        node: list@ahz0EVxbvlJ
+        scope: null
+        handle:
+          key: input
+          variadic_key: _ozgU
+    - id: >-
+        dj-edge__CaHfmGZTKhJ__list@ahz0EVxbvlJ-~::~::result::~__filter@SVEgBYIFbyg-~::~::input::~
+      source:
+        node: list@ahz0EVxbvlJ
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: filter@SVEgBYIFbyg
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: >-
+        dj-edge__FU-Uh84Zlng__template@PTzlbH_vq1i-~::~::result::~__filter@SVEgBYIFbyg-body::~::body_result::~
+      source:
+        node: template@PTzlbH_vq1i
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: filter@SVEgBYIFbyg
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: body_result
+          variadic_key: null
+    - id: >-
+        dj-edge__pxyc7vp6BHM__filter@SVEgBYIFbyg-~::~::result::~__zip@HWK0wvG5And-body::~::body_result::_vKQb
+      source:
+        node: filter@SVEgBYIFbyg
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: zip@HWK0wvG5And
+        scope:
+          key: body
+          variadic_key: null
+        handle:
+          key: body_result
+          variadic_key: _vKQb
+    - id: >-
+        dj-edge__beVt_ljV5RL__zip@HWK0wvG5And-~::~::result::_vKQb__flatten@YyXNRg8mJr7-~::~::input::~
+      source:
+        node: zip@HWK0wvG5And
+        scope: null
+        handle:
+          key: result
+          variadic_key: _vKQb
+      target:
+        node: flatten@YyXNRg8mJr7
+        scope: null
+        handle:
+          key: input
+          variadic_key: null
+    - id: >-
+        dj-edge__qGLuJev2I2p__flatten@YyXNRg8mJr7-~::~::result::~__javascript@LAZDbtFz2Ff-~::~::input_values::_X_2y
+      source:
+        node: flatten@YyXNRg8mJr7
+        scope: null
+        handle:
+          key: result
+          variadic_key: null
+      target:
+        node: javascript@LAZDbtFz2Ff
+        scope: null
+        handle:
+          key: input_values
+          variadic_key: _X_2y
+inputs:
+  - node_id: file_input@UlRwpLdmAfW
+    name: Agreement
+    description: ''
+    placeholder: null
+    type: file
+    is_optional: false
+    minimum_file_input_limit: null
+    maximum_file_input_limit: null
+    enum_values: null
+    enum_default_value: null
+    target_name: null
+    prepopulate_from:
+      - search_hit
+      - multi_file_selection
+    allowed_file_types:
+      - PDF
+      - Word Document
+      - Email
+    override_index_slug: null
+    override_schema_name: null
+    interpret_as_workflow_environment_variable: null
+    default_llm_config: null
+    entity_type: null
+    allow_create_collection: false
+interface:
+  inputs:
+    - key: file_input@UlRwpLdmAfW
+      name: Agreement
+      type_hint: FileUpload | IndexedFile
+      is_optional: false
+  outputs:
+    - key: output@wDYRlO4a-hP
+      name: CSV Table
+      type_hint: unknown
+      node_type: output
+      type:
+        kind: any
+    - key: output@Q8cGzieyS73
+      name: Docx file
+      type_hint: unknown
+      node_type: output
+      type:
+        kind: any
+    - key: output@vekbN2sB2Y1
+      name: Checklist table
+      type_hint: String
+      node_type: output
+      type:
+        kind: any
